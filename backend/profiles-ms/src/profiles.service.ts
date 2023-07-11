@@ -239,7 +239,7 @@ export class ProfilesService implements OnModuleInit {
       const profileData = await this.profileRepository.findOneBy({
         userId: user['id'],
       });
-      return { ...profileData, ...user };
+      return [{ ...profileData, ...user }];
     } else {
       const profileData: Profile[] = await this.profileRepository.findBy({
         ...params,
