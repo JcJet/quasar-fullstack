@@ -231,14 +231,11 @@ export class UsersService {
   async getUser(email: string, vkId: number, userId): Promise<User> {
     console.log({ email, vkId, userId });
     if (email) {
-      console.log('1')
-      return this.getUserByEmail(email);
+      return await this.getUserByEmail(email);
     } else if (vkId) {
-      console.log('2')
-      return this.usersRepository.findOneBy({ vkId });
+      return await this.usersRepository.findOneBy({ vkId });
     } else if (userId) {
-      console.log('3')
-      return this.usersRepository.findOneBy({ id: userId });
+      return await this.usersRepository.findOneBy({ id: userId });
     }
   }
 }

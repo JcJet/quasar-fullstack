@@ -232,10 +232,14 @@ export class ProfilesService implements OnModuleInit {
   async getProfileBy(params): Promise<any> {
     let profileData;
     if (params['email']) {
-      const user = this.getUser({ email: params['email'] });
+      const user = await this.getUser({ email: params['email'] });
+      if (!user) {
+        throw new HttpException('Email не найден', HttpStatus.NOT_FOUND);
+      }
       profileData = await this.profileRepository.findOneBy({
         userId: user['id'],
       });
+      console.log(`profileData: ${profileData}`);
     } else {
       profileData = await this.profileRepository.findOneBy({ ...params });
     }
