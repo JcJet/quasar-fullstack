@@ -87,7 +87,7 @@
           color="white"
           class="float-right"
           text-color="primary"
-          :to="{ name: 'home' }"
+          :to="{ name: 'users' }"
         />
       </div>
     </q-form>
