@@ -105,8 +105,6 @@ export default defineComponent({
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
       $router.push({ name: 'formUser', params: { id } });
     };
-
-    //TODO: add an endpoint
     const getUsers = async () => {
       try {
         const { model, query } = $route.query;

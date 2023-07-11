@@ -14,7 +14,7 @@ export const login = async ({ commit, dispatch }, payload) => {
       refresh: response.data.refreshToken,
     };
     commit('setToken', token);
-    api.defaults.headers.common.Authorization = 'JWT ' + token.access;
+    api.defaults.headers.common.Authorization = 'Bearer ' + token.access;
     //commit('setUser', response.data.user);
     dispatch('getUser', token);
   });
