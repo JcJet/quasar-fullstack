@@ -222,8 +222,8 @@ export class ProfilesService implements OnModuleInit {
     }
   }
   @logCall()
-  async getProfileById(id: number): Promise<Profile[]> {
-    const profileData = await this.profileRepository.findBy({ id }); //TODO: no result
+  async getProfileById(id: number): Promise<Profile> {
+    const profileData = await this.profileRepository.findOneBy({ id });
     if (!profileData) {
       throw new HttpException('Профиль не найден', HttpStatus.NOT_FOUND);
     }

@@ -78,7 +78,7 @@ export class ProfilesController {
   async getProfileById(
     @Payload() data: { profileId: number },
   ): Promise<Profile> {
-    return await this.profilesService.getProfileById(data.profileId)[0];
+    return await this.profilesService.getProfileById(data.profileId);
   }
   @MessagePattern({ cmd: 'getProfileBy' })
   async getProfileByUserId(
