@@ -244,12 +244,9 @@ export class ProfilesService implements OnModuleInit {
       const profileData: Profile[] = await this.profileRepository.findBy({
         ...params,
       });
-      console.log(profileData);
       for (const profile of profileData) {
-        console.log(profile)
         console.log(profile['userId']);
         const user = await this.getUser({ userId: profile['userId'] });
-        console.log(user)
         profile['email'] = user['email'];
       }
       return profileData;
