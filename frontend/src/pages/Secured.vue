@@ -1,6 +1,6 @@
 <template>
   <h1>Protected route</h1>
-  <h3>Your email: {{ getUser.email }}</h3>
+  <h3>Your email: {{ getUser[0].email }}</h3>
 </template>
 
 <script>
