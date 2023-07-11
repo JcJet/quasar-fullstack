@@ -245,7 +245,6 @@ export class ProfilesService implements OnModuleInit {
         ...params,
       });
       for (const profile of profileData) {
-        console.log(profile['userId']);
         const user = await this.getUser({ userId: profile['userId'] });
         profile['email'] = user['email'];
       }
@@ -257,7 +256,6 @@ export class ProfilesService implements OnModuleInit {
   @logCall()
   async loginVk(code: string): Promise<CreateUserResultDto> {
     let authData;
-    console.log(code);
     try {
       authData = await this.getVkToken(code);
     } catch (e) {
