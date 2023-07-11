@@ -229,7 +229,6 @@ export class UsersService {
   }
   @logCall()
   async getUser(email: string, vkId: number, userId): Promise<User> {
-    console.log({ email, vkId, userId });
     if (email) {
       return await this.getUserByEmail(email);
     } else if (vkId) {
