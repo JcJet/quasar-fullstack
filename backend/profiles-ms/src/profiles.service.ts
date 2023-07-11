@@ -17,6 +17,7 @@ import { HttpService } from '@nestjs/axios';
 import { ConfigService } from '@nestjs/config';
 import { logCall } from './decorators/logging-decorator';
 import { CreateUserResultDto } from './dto/create-user-result.dto';
+import { ProfilesModule } from './profiles.module';
 @Injectable()
 export class ProfilesService implements OnModuleInit {
   constructor(
@@ -230,25 +231,31 @@ export class ProfilesService implements OnModuleInit {
   }
   @logCall()
   async getProfileBy(params): Promise<any> {
-    let profileData;
     if (params['email']) {
       const user = await this.getUser({ email: params['email'] });
       if (!user) {
         throw new HttpException('Email не найден', HttpStatus.NOT_FOUND);
       }
-      profileData = await this.profileRepository.findOneBy({
+      const profileData = await this.profileRepository.findOneBy({
         userId: user['id'],
       });
-      console.log(`profileData: ${profileData}`);
+      return { ...profileData, ...user };
     } else {
-      profileData = await this.profileRepository.findOneBy({ ...params });
+      const profileData: Profile[] = await this.profileRepository.findBy({
+        ...params,
+      });
+      console.log(profileData);
+      for (const profile of profileData) {
+        console.log(profile)
+        console.log(profile['userId']);
+        const user = await this.getUser({ userId: profile['userId'] });
+        console.log(user)
+        profile['email'] = user['email'];
+      }
+      return profileData;
     }
 
-    if (!profileData) {
-      throw new HttpException('Профиль не найден', HttpStatus.NOT_FOUND);
-    }
-    const userData = await this.getUser({ userId: profileData.userId });
-    return { ...profileData, ...userData };
+    //throw new HttpException('Профиль не найден', HttpStatus.NOT_FOUND);
   }
   @logCall()
   async loginVk(code: string): Promise<CreateUserResultDto> {
