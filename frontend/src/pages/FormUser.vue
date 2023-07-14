@@ -132,15 +132,16 @@ export default defineComponent({
     // eslint-disable-next-line @typescript-eslint/no-shadow
     const post = async (form) => {
       try {
-        console.log(form.value);
         const { data } = await api.post('registration', form.value);
-        console.log(data);
+        await this.login({
+        email: form.email,
+        password: form.password,
+      });
         // eslint-disable-next-line @typescript-eslint/no-unsafe-return
         return data;
       } catch (error) {
         throw new Error(error);
       }
-      //TODO: add admin roles
     };
     // eslint-disable-next-line @typescript-eslint/no-shadow
     const update = async (form) => {

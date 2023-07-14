@@ -1,0 +1,92 @@
+version: "3.9"
+
+services:
+
+  frontend:
+    container_name: frontend
+    build:
+      context: ./frontend
+      dockerfile: ./Dockerfile
+    ports:
+      - "8080:8080"
+    command: /bin/sh -c "npm i && quasar dev"
+    
+  rabbitmq:
+    container_name: rabbitmq
+    image: rabbitmq:3.11.3-management
+    restart: always
+    ports:
+      - "5672"
+
+  api_gateway:
+    container_name: api_gateway
+    build:
+      context: ./backend/api-gateway
+      dockerfile: ./Dockerfile
+      target: production
+    ports:
+      - "4000:4000"
+    restart: always
+
+  auth:
+    container_name: auth
+    build:
+      context: ./backend/auth-ms
+      dockerfile: ./Dockerfile
+      target: development
+    restart: always
+    depends_on:
+      - auth_pg
+
+  auth_pg:
+    container_name: auth_pg
+    image: postgres:15.2-alpine
+    environment:
+      POSTGRES_DB: auth
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+    ports:
+      - "5432"
+    restart: always
+
+  profiles:
+    container_name: profiles
+    build:
+      context: ./backend/profiles-ms
+      dockerfile: ./Dockerfile
+      target: development
+    restart: always
+    depends_on:
+      - profiles_pg
+
+  profiles_pg:
+    container_name: profiles_pg
+    image: postgres:15.2-alpine
+    environment:
+      POSTGRES_DB: profiles
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+    ports:
+      - "5432"
+    restart: always
+
+  roles:
+    container_name: roles
+    build:
+      context: ./backend/roles-ms
+      dockerfile: ./Dockerfile
+      target: development
+    restart: always
+    depends_on:
+      - roles_pg
+
+  roles_pg:
+    container_name: roles_pg
+    image: postgres:15.2-alpine
+    environment:
+      POSTGRES_DB: roles
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+    ports:
+      - "5432"
+    restart: always

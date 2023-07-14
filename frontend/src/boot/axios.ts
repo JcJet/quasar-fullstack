@@ -28,6 +28,8 @@ export default boot(({ app }) => {
   // for use inside Vue files (Options API) through this.$axios and this.$api
 
   api.interceptors.request.use((config) => {
+    config.headers.common['ngrok-skip-browser-warning'] = true; //for hosting on ngrok free tier
+    //config.headers.origin = window.location.origin
     config.headers.Authorization = `Bearer ${localStorage.getItem('token')}`;
     console.log(config.data);
     return config;
@@ -48,7 +50,7 @@ export default boot(({ app }) => {
         try {
           const response = await axios.post<AuthResponse>(
             `${API_URL}/refreshAccessToken`,
-            { withCredentials: true }
+            { withCredentials: true , refreshToken: localStorage.getItem('refreshToken')}
           );
           localStorage.setItem('token', response.data.accessToken);
           return api.request(originalRequest);

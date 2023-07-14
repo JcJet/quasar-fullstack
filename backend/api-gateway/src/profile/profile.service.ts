@@ -126,8 +126,9 @@ export class ProfileService {
       new Date(),
     );
 
-    const { refreshToken } = request.cookies;
-    console.log(request.cookies);
+    //const { refreshToken } = request.cookies;
+    //cookies пока не работают, т.к. разные порты фронта и бэка.
+    const refreshToken = request.body['refreshToken'];
     const profileData = await lastValueFrom(
       this.profileProxy.send(
         { cmd: 'refreshAccessToken' },

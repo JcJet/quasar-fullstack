@@ -130,6 +130,14 @@ export class ProfilesService implements OnModuleInit {
       nickName,
     });
 
+    // В настоящее время все юзеры - с привелегиями админа
+    await lastValueFrom(
+      this.toRolesProxy.send(
+        { cmd: 'addUserRoles' },
+        { dto: { userId, roles: ['ADMIN'] } },
+      ),
+    );
+
     const createdProfileId = profileInsertResult.raw[0].id;
     const createdProfile: Profile = await this.getProfileById(
       createdProfileId,
