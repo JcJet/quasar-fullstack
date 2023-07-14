@@ -127,6 +127,7 @@ export class ProfileService {
     );
 
     const { refreshToken } = request.cookies;
+    console.log(request.cookies);
     const profileData = await lastValueFrom(
       this.profileProxy.send(
         { cmd: 'refreshAccessToken' },

@@ -4,7 +4,6 @@ import { Reflector } from '@nestjs/core';
 import { ConfigService } from '@nestjs/config';
 import { lastValueFrom } from 'rxjs';
 
-import { CommentsService } from '../comments/comments.service';
 import { ProfileService } from '../profile/profile.service';
 
 @Injectable()
@@ -12,7 +11,6 @@ export class MasterOrAdminGuard implements CanActivate {
   constructor(
     private jwtService: JwtService,
     private reflector: Reflector,
-    private commentsService: CommentsService,
     private profileService: ProfileService,
     private configService: ConfigService,
   ) {}
@@ -32,20 +30,11 @@ export class MasterOrAdminGuard implements CanActivate {
     return userData.roles.includes('ADMIN');
 
     //Getting userId by accessed entity
-    const commentsMethods = ['deleteComment', 'updateComment'];
     const profileMethods = ['deleteProfile', 'updateProfile'];
 
     const calledMethodName = context.getHandler().name;
 
-    if (commentsMethods.includes(calledMethodName)) {
-      // Comments section
-      const commentId = context.switchToHttp().getRequest().params.id;
-      const accessedComment = await lastValueFrom(
-        await this.commentsService.getCommentById(commentId),
-      );
-
-      return accessedComment.userId == userData.userId;
-    } else if (profileMethods.includes(calledMethodName)) {
+    if (profileMethods.includes(calledMethodName)) {
       // Profiles section
       const profileId = context.switchToHttp().getRequest().params.id;
       const accessedProfile = await this.profileService.getProfileById(

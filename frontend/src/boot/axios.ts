@@ -46,7 +46,7 @@ export default boot(({ app }) => {
       ) {
         originalRequest._isRetry = true;
         try {
-          const response = await axios.get<AuthResponse>(
+          const response = await axios.post<AuthResponse>(
             `${API_URL}/refreshAccessToken`,
             { withCredentials: true }
           );
