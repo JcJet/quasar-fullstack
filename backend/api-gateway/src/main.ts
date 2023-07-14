@@ -20,6 +20,7 @@ async function bootstrap() {
   app.use(cookieParser());
 
   app.enableCors({ credentials: true, origin: true });
+
   app.useGlobalPipes(new ValidationPipe());
   app.useGlobalFilters(new RpcExceptionFilter());
 

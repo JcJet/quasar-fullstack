@@ -1,7 +1,9 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { boot } from 'quasar/wrappers';
 import axios, { AxiosInstance } from 'axios';
+import { AuthResponse } from 'src/models/response/AuthResponse';
 
 export const API_URL = 'http://localhost:4000';
 
@@ -30,6 +32,33 @@ export default boot(({ app }) => {
     console.log(config.data);
     return config;
   });
+
+  api.interceptors.response.use(
+    (config) => {
+      return config;
+    },
+    async (error) => {
+      const originalRequest = error.config;
+      if (
+        error.response.status == 401 &&
+        error.config &&
+        !error.config._isRetry
+      ) {
+        originalRequest._isRetry = true;
+        try {
+          const response = await axios.get<AuthResponse>(
+            `${API_URL}/refreshAccessToken`,
+            { withCredentials: true }
+          );
+          localStorage.setItem('token', response.data.accessToken);
+          return api.request(originalRequest);
+        } catch (e) {
+          console.log('Unauthorized');
+        }
+      }
+      throw error;
+    }
+  );
 
   app.config.globalProperties.$axios = axios;
   // ^ ^ ^ this will allow you to use this.$axios (for Vue Options API form)
