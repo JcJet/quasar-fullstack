@@ -8,7 +8,7 @@ sudo docker compose up --build -V
 ```
 http://localhost:8080/
 ```
-
+Срок жизни Access Token = 15s, для удобства проверки.
 
 При необходимости запуска фронтенда и бекенда отдельно:
 
