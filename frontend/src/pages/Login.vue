@@ -80,7 +80,7 @@ export default {
       } else {
         try {
           await this.login(this.loginData);
-          const toPath = this.$route.query.to || '/secured';
+          const toPath = this.$route.query.to || '/users';
           this.$router.push(toPath);
         } catch (err) {
           console.log(response);

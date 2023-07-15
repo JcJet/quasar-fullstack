@@ -7,7 +7,6 @@ const routes: RouteRecordRaw[] = [
     children: [
       { path: '', component: () => import('pages/Index.vue') },
       { path: '/login', component: () => import('pages/Login.vue') },
-      { path: '/register', component: () => import('pages/Register.vue') },
       {
         path: '/users',
         name: 'users',
@@ -23,11 +22,6 @@ const routes: RouteRecordRaw[] = [
         path: 'form-filter',
         name: 'formFilter',
         component: () => import('pages/FilterRow.vue'),
-      },
-      {
-        path: '/secured',
-        component: () => import('pages/Secured.vue'),
-        meta: { requireLogin: true },
       },
       {
         path: '/unauthorized',
