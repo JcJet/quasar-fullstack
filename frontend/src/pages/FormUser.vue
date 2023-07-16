@@ -117,7 +117,12 @@ export default defineComponent({
         // eslint-disable-next-line @typescript-eslint/no-unsafe-return
         return data;
       } catch (error) {
-        throw new Error(error);
+        $q.notify({
+          message: 'Error get users',
+          icon: 'times',
+          color: 'negative',
+        });
+        void router.push({ name: 'login' });
       }
     };
     onMounted(async () => {
@@ -133,14 +138,10 @@ export default defineComponent({
     const post = async (form) => {
       try {
         const { data } = await api.post('registration', form.value);
-        await this.login({
-        email: form.email,
-        password: form.password,
-      });
         // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-        return data;
+        return 201;
       } catch (error) {
-        throw new Error(error);
+        return Number(error.response.status);
       }
     };
     // eslint-disable-next-line @typescript-eslint/no-shadow
@@ -176,13 +177,34 @@ export default defineComponent({
           });
         }
       } else {
-        void post(form);
-        $q.notify({
-          message: 'User created',
-          icon: 'check',
-          color: 'positive',
-        });
-        void router.push({ name: 'users' });
+        const statusCode = await post(form);
+        switch (statusCode) {
+          case 201: {
+            $q.notify({
+              message: 'User created',
+              icon: 'check',
+              color: 'positive',
+            });
+            void router.push({ name: 'login' });
+            break;
+          }
+          case 409: {
+            $q.notify({
+              message: 'Email already exists',
+              icon: 'times',
+              color: 'negative',
+            });
+            break;
+          }
+          default: {
+            $q.notify({
+              message: `Status code: ${statusCode}`,
+              icon: 'times',
+              color: 'negative',
+            });
+            break;
+          }
+        }
       }
     };
 

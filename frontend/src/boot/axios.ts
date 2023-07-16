@@ -26,7 +26,6 @@ const api = axios.create({
 
 export default boot(({ app }) => {
   // for use inside Vue files (Options API) through this.$axios and this.$api
-
   api.interceptors.request.use((config) => {
     config.headers.common['ngrok-skip-browser-warning'] = true; //for hosting on ngrok free tier
     config.headers.Authorization = `Bearer ${localStorage.getItem('token')}`;

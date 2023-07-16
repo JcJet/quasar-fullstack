@@ -44,7 +44,7 @@ export default route(function ({ store }) {
       !auth.isAuthenticated
     ) {
       next({
-        name: 'Unauthorized',
+        name: 'unauthorized',
       });
     } else next();
   });

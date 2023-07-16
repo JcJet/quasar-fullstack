@@ -26,9 +26,7 @@ export const logout = ({ commit }) => {
 };
 
 export const getUser = async ({ commit }, token) => {
-  console.log(token);
   const userData = jwt_decode(token.access);
-  console.log(userData);
   await api
     .get(`profile/?userId=${String(userData.userId)}`)
     .then((response) => {

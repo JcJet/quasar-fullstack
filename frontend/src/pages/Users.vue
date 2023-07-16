@@ -128,7 +128,8 @@ export default defineComponent({
         const { data } = await api.get('profiles');
         users.value = data;
       } catch (error) {
-        throw new Error(error);
+        void router.push({ name: 'login' });
+        //throw new Error(error);
       }
     };
     // eslint-disable-next-line consistent-return
@@ -173,7 +174,7 @@ export default defineComponent({
       } catch (error) {
         console.log(error);
         $q.notify({
-          message: 'Error User delete',
+          message: 'Error deleting user',
           icon: 'times',
           color: 'negative',
         });

@@ -138,7 +138,8 @@ export class UsersService {
       user.oauthProviders.push(providerInsertResult.raw[0]);
       await this.oauthRepository.save(user);
     }
-
+    console.log(userDto);
+    console.log(user);
     const passwordEquals = await bcrypt.compare(
       userDto.password,
       user.password,

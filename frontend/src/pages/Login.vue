@@ -83,7 +83,6 @@ export default {
           const toPath = this.$route.query.to || '/users';
           this.$router.push(toPath);
         } catch (err) {
-          console.log(response);
           if (err.response.data.detail) {
             $q.notify({
               type: 'negative',

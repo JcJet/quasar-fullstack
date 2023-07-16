@@ -6,7 +6,7 @@ const routes: RouteRecordRaw[] = [
     component: () => import('layouts/MainLayout.vue'),
     children: [
       { path: '', component: () => import('pages/Index.vue') },
-      { path: '/login', component: () => import('pages/Login.vue') },
+      { path: '/login', name: 'login', component: () => import('pages/Login.vue') },
       {
         path: '/users',
         name: 'users',
@@ -25,7 +25,7 @@ const routes: RouteRecordRaw[] = [
       },
       {
         path: '/unauthorized',
-        name: 'Unauthorized',
+        name: 'unauthorized',
         component: () => import('pages/Error401.vue'),
       },
     ],
